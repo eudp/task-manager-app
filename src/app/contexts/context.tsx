@@ -41,7 +41,7 @@ function reducer(currentState: Task[], action: TasksActions) {
   }
 }
 
-const TasksContitle = createContext<TasksTuple | null>(null);
+const TasksContext = createContext<TasksTuple | null>(null);
 
 export function TaskProvider({ children }: { children: React.ReactNode }) {
   const [tasks, dispatch] = useReducer(reducer, []);
@@ -64,15 +64,15 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  return <TasksContitle value={[tasks, dispatch]}>{children}</TasksContitle>;
+  return <TasksContext value={[tasks, dispatch]}>{children}</TasksContext>;
 }
 
 export function useTasks() {
-  const contitle = use(TasksContitle);
+  const context = use(TasksContext);
 
-  if (!contitle) {
+  if (!context) {
     throw new Error("use this inside the TaskProvider");
   }
 
-  return contitle;
+  return context;
 }
